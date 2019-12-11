@@ -5,6 +5,19 @@
 When upgrading also have a look at the changes in the
 [sulu skeleton](https://github.com/sulu/skeleton/compare/2.0.2...2.0.3).
 
+### PageTreeRoute added
+
+The interfaces `RouteInterface` and `RouteRepositoryInterface` have changed.
+
+The methods `getParentUuid()` and `setParentUuid($parentUuid)` have been added to the `RouteInterface`.
+
+The method `findAllByParent($parentUuid, $locale)` has been added to the `RouteRepositoryInterface`.
+
+```sql
+ALTER TABLE ro_routes ADD parent_uuid VARCHAR(191) DEFAULT NULL;
+CREATE INDEX IDX_671DB7A4EC9C6612 ON ro_routes (parent_uuid);
+```
+
 ### Symfony/templating requirement removed
 
 Sulu does not longer need the `symfony/templating` package which is deprecated.
