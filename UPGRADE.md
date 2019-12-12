@@ -11,7 +11,7 @@ The interfaces `RouteInterface` and `RouteRepositoryInterface` have changed.
 
 The methods `getParentUuid()` and `setParentUuid($parentUuid)` have been added to the `RouteInterface`.
 
-The method `findAllByParent($parentUuid, $locale)` has been added to the `RouteRepositoryInterface`.
+The method `findAllByParent($parentUuid, $entityClass, $locale)` has been added to the `RouteRepositoryInterface`.
 
 ```sql
 ALTER TABLE ro_routes ADD parent_uuid VARCHAR(191) DEFAULT NULL;
