@@ -60,11 +60,6 @@ class Route implements RouteInterface, AuditableInterface
     private $entityId;
 
     /**
-     * @var string
-     */
-    private $parentUuid;
-
-    /**
      * @var bool
      *
      * @Expose
@@ -172,24 +167,6 @@ class Route implements RouteInterface, AuditableInterface
     public function setEntityId($entityId)
     {
         $this->entityId = $entityId;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParentUuid()
-    {
-        return $this->parentUuid;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setParentUuid($parentUuid)
-    {
-        $this->parentUuid = $parentUuid;
 
         return $this;
     }
