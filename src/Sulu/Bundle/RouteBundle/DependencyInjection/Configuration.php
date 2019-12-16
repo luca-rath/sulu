@@ -55,7 +55,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->enumNode('page_route_cascade')
                                     ->values(['request', 'task', 'off'])
-                                    ->defaultValue('off')
+                                    ->defaultValue('request')
                                 ->end()
                             ->end()
                         ->end()
