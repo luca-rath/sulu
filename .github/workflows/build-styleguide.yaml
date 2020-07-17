@@ -63,7 +63,7 @@ jobs:
               run: echo '<!DOCTYPE html><html><body><script>window.location.href += "/${{ steps.latest_tag.outputs.TAG }}";</script></body></html>' > styleguide/index.html
 
             - name: Update version's index.html
-              run: sed -i '' 's~<body[^>]*>~&<script src="https://cdn.jsdelivr.net/gh/luca-rath/version-switcher/dist/main.js"></script><script>window.versionSwitcher.render("${{ steps.get_version.outputs.VERSION }}", ${{ steps.list_styleguides.outputs.DIRS }});</script>~' styleguide/${{ steps.get_version.outputs.VERSION }}/index.html
+              run: sed -i 's~<body[^>]*>~&<script src="https://cdn.jsdelivr.net/gh/luca-rath/version-switcher/dist/main.js"></script><script>window.versionSwitcher.render("${{ steps.get_version.outputs.VERSION }}", ${{ steps.list_styleguides.outputs.DIRS }});</script>~' styleguide/${{ steps.get_version.outputs.VERSION }}/index.html
 
             - name: Push styleguide
               run: |
