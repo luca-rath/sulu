@@ -41,9 +41,9 @@ jobs:
 
             - name: Change styleguide config
             - run: |
-                sed -i '' '/module\.exports.*/a\
-                    styleguideDir\: "styleguide\/${{ steps.get_version.outputs.VERSION }}",
-                ' styleguide.config.js
+                  sed -i '' '/module\.exports.*/a\
+                      styleguideDir\: "styleguide\/${{ steps.get_version.outputs.VERSION }}",
+                  ' styleguide.config.js
 
             - name: Build styleguide
               run: npm run styleguide:build
