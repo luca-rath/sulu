@@ -16,41 +16,27 @@ jobs:
             - name: Checkout project
               uses: actions/checkout@v1
 
-            - name: Get the version
-              id: get_version
-              run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+            - name: Print the event name
+              run: echo $GITHUB_EVENT_NAME
 
-            - name: Print the version
-              run: echo Version ${{ steps.get_version.outputs.VERSION }}
+            - name: Get ref name
+              id: get_ref_name
+              run: echo ::set-output name=REF_NAME::${GITHUB_REF/refs\/tags\//}
 
-            - name: Print github tagname
-              run: echo ${{ github.event.release.tag_name }}
+            - name: Get tag name
+              id: get_tag_name
+              run: echo ::set-output name=TAG_NAME::${{ github.event.release.tag_name }}
 
+            - name: Print the ref name
+              run: echo Version ${{ steps.get_ref_name.outputs.REF_NAME }}
+
+            - name: Print the tag name
+              run: echo Version ${{ steps.get_tag_name.outputs.TAG_NAME }}
 
             - name: Dump GitHub context
               env:
                   GITHUB_CONTEXT: ${{ toJson(github) }}
               run: echo "$GITHUB_CONTEXT"
-            - name: Dump job context
-              env:
-                  JOB_CONTEXT: ${{ toJson(job) }}
-              run: echo "$JOB_CONTEXT"
-            - name: Dump steps context
-              env:
-                  STEPS_CONTEXT: ${{ toJson(steps) }}
-              run: echo "$STEPS_CONTEXT"
-            - name: Dump runner context
-              env:
-                  RUNNER_CONTEXT: ${{ toJson(runner) }}
-              run: echo "$RUNNER_CONTEXT"
-            - name: Dump strategy context
-              env:
-                  STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-              run: echo "$STRATEGY_CONTEXT"
-            - name: Dump matrix context
-              env:
-                  MATRIX_CONTEXT: ${{ toJson(matrix) }}
-              run: echo "$MATRIX_CONTEXT"
 
 #            - name: Use Node.js 12
 #              uses: actions/setup-node@v1
