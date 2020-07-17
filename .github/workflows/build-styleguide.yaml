@@ -30,7 +30,7 @@ jobs:
 
             - name: Change styleguide config
               run: |
-                  sed -i '' '/module\.exports.*/a\ styleguideDir\: "styleguide\/${{ steps.get_version.outputs.VERSION }}",' styleguide.config.js
+                  sed -i 's/VERSION/${{ steps.get_version.outputs.VERSION }}/g' styleguide.build.config.js
 
             - name: Use Node.js 12
               uses: actions/setup-node@v1
@@ -44,7 +44,7 @@ jobs:
 #              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
 
             - name: Build styleguide
-              run: npm run styleguide:build
+              run: npm run styleguide:build -- --config styleguide.build.config.js
 
             - run: ls -lAh styleguide
             - run: ls -lAh styleguide/${{ steps.get_version.outputs.VERSION }}
