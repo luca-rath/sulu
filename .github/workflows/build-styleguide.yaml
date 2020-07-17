@@ -23,6 +23,20 @@ jobs:
             - name: Checkout project
               uses: actions/checkout@v1
 
+            - name: Get latest release
+              id: latest_release
+              uses: pozetroninc/github-action-get-latest-release@v0.4.0
+              with:
+                  owner: luca-rath
+                  repo: sulu
+
+            - name: Get latest tag
+              id: latest_tag
+              run: echo ::set-output name=TAG::$(echo ${{ steps.latest_release.outputs.release }} | cut -d . -f -2)
+
+            - name: Print latest tag
+              run: echo ${{ steps.latest_tag.outputs.TAG }}
+
             - name: Change styleguide config
               run: |
                   sed -i 's/VERSION/${{ steps.get_version.outputs.VERSION }}/g' styleguide.build.config.js
@@ -36,14 +50,16 @@ jobs:
               run: npm install
 
             - name: Clone SuluJsReference repository
-              run: git clone https://github.com/luca-rath/sulu-js-reference.git styleguide
+              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
 
             - name: Build styleguide
               run: npm run styleguide:build -- --config styleguide.build.config.js
 
             - name: List styleguides
               id: list_styleguides
-              run: echo ::set-output name=DIRS::$(python -c 'import os, json; print json.dumps(os.listdir("./styleguide"))')
+              run: echo ::set-output name=DIRS::$(python -c 'import os, json; print json.dumps([f for f in os.listdir("styleguide/") if not f.startswith(".") and os.path.isdir(os.path.join("styleguide/", f))])')
 
             - name: Print dirs
               run: echo ${{ steps.list_styleguides.outputs.DIRS }}
+
+
