@@ -43,4 +43,4 @@ jobs:
               run: npm run styleguide:build -- --config styleguideDir=styleguide/${{ steps.get_version.outputs.VERSION }}/
 
             - run: ls -lAh styleguide
-            - run: ls -lAh styleguide/master
+            - run: ls -lAh styleguide/${{ steps.get_version.outputs.VERSION }}
