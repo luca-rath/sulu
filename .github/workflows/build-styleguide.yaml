@@ -23,6 +23,9 @@ jobs:
             - name: Print the version
               run: echo Version ${{ steps.get_version.outputs.VERSION }}
 
+            - name: Print github tagname
+              run: echo Version ${{ github.event.release.tag_name }}
+
 #            - name: Use Node.js 12
 #              uses: actions/setup-node@v1
 #              with:
