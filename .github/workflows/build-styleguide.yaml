@@ -36,8 +36,8 @@ jobs:
             - name: Install dependencies
               run: npm install
 
-            - name: Clone SuluJsReference repository
-              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
+#            - name: Clone SuluJsReference repository
+#              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
 
             - name: Build styleguide
               run: npm run styleguide:build -- --config styleguideDir=styleguide/${{ steps.get_version.outputs.VERSION }}/
