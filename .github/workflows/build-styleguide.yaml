@@ -23,13 +23,6 @@ jobs:
             - name: Checkout project
               uses: actions/checkout@v2
 
-            - name: Clone SuluJsReference repository
-              uses: actions/checkout@v2
-              with:
-                  repository: luca-rath/sulu-js-reference
-                  token: ${{ secrets.ACCESS_TOKEN }}
-                  path: styleguide
-
             - name: Change styleguide config
               run: |
                   sed -i 's/VERSION/${{ steps.get_version.outputs.VERSION }}/g' styleguide.build.config.js
@@ -41,6 +34,13 @@ jobs:
 
             - name: Install dependencies
               run: npm install
+
+            - name: Clone SuluJsReference repository
+              uses: actions/checkout@v2
+              with:
+                  repository: luca-rath/sulu-js-reference
+                  token: ${{ secrets.ACCESS_TOKEN }}
+                  path: styleguide
 
             - name: Build styleguide
               run: npm run styleguide:build -- --config styleguide.build.config.js
@@ -71,3 +71,11 @@ jobs:
 
             - name: Print index.html
               run: cat styleguide/index.html
+
+            - name: Push styleguide
+              run: |
+                  cd styleguide
+                  git remote set-url origin https://luca-rath:${{ secrets.ACCESS_TOKEN }}@github.com/luca-rath/sulu-js-reference.git
+                  git add .
+                  git commit -m "Publish ${{ steps.get_version.outputs.VERSION }}"
+                  git push origin master
