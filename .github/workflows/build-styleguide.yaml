@@ -23,20 +23,6 @@ jobs:
             - name: Checkout project
               uses: actions/checkout@v1
 
-            - name: Get latest release
-              id: latest_release
-              uses: pozetroninc/github-action-get-latest-release@v0.4.0
-              with:
-                  owner: sulu
-                  repo: sulu
-
-            - name: Get latest tag
-              id: latest_tag
-              run: echo ::set-output name=TAG::$(echo ${{ steps.latest_release.outputs.release }} | cut -d . -f -2)
-
-            - name: Print latest tag
-              run: echo ${{ steps.latest_tag.outputs.TAG }}
-
             - name: Change styleguide config
               run: |
                   sed -i 's/VERSION/${{ steps.get_version.outputs.VERSION }}/g' styleguide.build.config.js
@@ -62,4 +48,22 @@ jobs:
             - name: Print dirs
               run: echo ${{ steps.list_styleguides.outputs.DIRS }}
 
+            - name: Get latest release
+              id: latest_release
+              uses: pozetroninc/github-action-get-latest-release@v0.4.0
+              with:
+                  owner: sulu
+                  repo: sulu
 
+            - name: Get latest tag
+              id: latest_tag
+              run: echo ::set-output name=TAG::$(echo ${{ steps.latest_release.outputs.release }} | cut -d . -f -2)
+
+            - name: Print latest tag
+              run: echo ${{ steps.latest_tag.outputs.TAG }}
+
+            - name: Override index.html
+              run: echo '<!DOCTYPE html><html><body><script>window.location.href += "/${{ steps.latest_tag.outputs.TAG }}";</script></body></html>' > styleguide/index.html
+
+            - name: Print index.html
+              run: cat styleguide/index.html
