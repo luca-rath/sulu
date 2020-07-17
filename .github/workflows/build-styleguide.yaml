@@ -39,8 +39,14 @@ jobs:
 #            - name: Clone SuluJsReference repository
 #              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
 
+            - name: Change styleguide config
+            - run: |
+                sed -i '' '/module\.exports.*/a\
+                    styleguideDir\: "styleguide\/${{ steps.get_version.outputs.VERSION }}",
+                ' styleguide.config.js
+
             - name: Build styleguide
-              run: npm run styleguide:build -- --styleguideDir styleguide/${{ steps.get_version.outputs.VERSION }}/
+              run: npm run styleguide:build
 
             - run: ls -lAh styleguide
             - run: ls -lAh styleguide/${{ steps.get_version.outputs.VERSION }}
