@@ -20,31 +20,35 @@ jobs:
 
             - name: Get the version
               id: get_version
-              run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+              # run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+              run: |
+                  if [[ -z $TAG_NAME ]]; then echo ::set-output name=VERSION::$(echo $TAG_NAME | cut -d . -f -2); else echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3); fi
+              env:
+                  TAG_NAME: ${{ github.event.release.tag_name }}
 
             - name: Print the version
               run: echo Version ${{ steps.get_version.outputs.VERSION }}
 
-            - name: Checkout project
-              uses: actions/checkout@v1
-
-            - name: Change styleguide config
-              run: |
-                  sed -i 's/VERSION/${{ steps.get_version.outputs.VERSION }}/g' styleguide.build.config.js
-
-            - name: Use Node.js 12
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 12.x
-
-            - name: Install dependencies
-              run: npm install
-
+#            - name: Checkout project
+#              uses: actions/checkout@v1
+#
+#            - name: Change styleguide config
+#              run: |
+#                  sed -i 's/VERSION/${{ steps.get_version.outputs.VERSION }}/g' styleguide.build.config.js
+#
+#            - name: Use Node.js 12
+#              uses: actions/setup-node@v1
+#              with:
+#                  node-version: 12.x
+#
+#            - name: Install dependencies
+#              run: npm install
+#
 #            - name: Clone SuluJsReference repository
 #              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
-
-            - name: Build styleguide
-              run: npm run styleguide:build -- --config styleguide.build.config.js
-
-            - run: ls -lAh styleguide
-            - run: ls -lAh styleguide/${{ steps.get_version.outputs.VERSION }}
+#
+#            - name: Build styleguide
+#              run: npm run styleguide:build -- --config styleguide.build.config.js
+#
+#            - run: ls -lAh styleguide
+#            - run: ls -lAh styleguide/${{ steps.get_version.outputs.VERSION }}
