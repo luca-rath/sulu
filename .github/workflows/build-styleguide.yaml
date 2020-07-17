@@ -75,6 +75,8 @@ jobs:
             - name: Push styleguide
               run: |
                   cd styleguide
+                  git config user.email "luca@sulu.io"
+                  git config user.name "Luca Rath-Heel"
                   git remote set-url origin https://luca-rath:${{ secrets.ACCESS_TOKEN }}@github.com/luca-rath/sulu-js-reference.git
                   git add .
                   git commit -m "Publish ${{ steps.get_version.outputs.VERSION }}"
