@@ -30,7 +30,7 @@ jobs:
 
             - name: Change styleguide config
               run: |
-                  sed -i '' '/module\.exports.*/a\ \nstyleguideDir\: "styleguide\/${{ steps.get_version.outputs.VERSION }}", \n' styleguide.config.js
+                  sed -i '' '/module\.exports.*/a\ styleguideDir\: "styleguide\/${{ steps.get_version.outputs.VERSION }}",' styleguide.config.js
 
             - name: Use Node.js 12
               uses: actions/setup-node@v1
