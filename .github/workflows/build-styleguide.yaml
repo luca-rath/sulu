@@ -13,41 +13,34 @@ jobs:
         name: Build styleguide
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout project
-              uses: actions/checkout@v1
-
-            - name: Print the event name
-              run: echo $GITHUB_EVENT_NAME
-
-            - name: Get ref name
-              id: get_ref_name
-              run: echo ::set-output name=REF_NAME::${GITHUB_REF/refs\/tags\//}
-
-            - name: Get tag name
-              id: get_tag_name
-              run: echo ::set-output name=TAG_NAME::${{ github.event.release.tag_name }}
-
-            - name: Print the ref name
-              run: echo Version ${{ steps.get_ref_name.outputs.REF_NAME }}
-
-            - name: Print the tag name
-              run: echo Version ${{ steps.get_tag_name.outputs.TAG_NAME }}
-
             - name: Dump GitHub context
               env:
                   GITHUB_CONTEXT: ${{ toJson(github) }}
               run: echo "$GITHUB_CONTEXT"
 
-#            - name: Use Node.js 12
-#              uses: actions/setup-node@v1
-#              with:
-#                  node-version: 12.x
-#
-#            - name: Install dependencies
-#              run: npm install
-#
-#            - name: Clone SuluJsReference repository
-#              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
-#
-#            - name: Build styleguide
-#              run: npm run styleguide:build
+            - name: Get the version
+              id: get_version
+              run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+
+            - name: Print the version
+              run: echo Version ${{ steps.get_version.outputs.VERSION }}
+
+            - name: Checkout project
+              uses: actions/checkout@v1
+
+            - name: Use Node.js 12
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Clone SuluJsReference repository
+              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
+
+            - name: Build styleguide
+              run: npm run styleguide:build -- --config styleguideDir=styleguide/${{ steps.get_version.outputs.VERSION }}/
+
+            - run: ls -lAh styleguide
+            - run: ls -lAh styleguide/master
