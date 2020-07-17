@@ -23,6 +23,21 @@ jobs:
             - name: Checkout project
               uses: actions/checkout@v1
 
+            - name: Install SSH key
+              uses: shimataro/ssh-key-action@v2
+              with:
+                  key: ${{ secrets.SULU_JS_REFERENCE }}
+                  #known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+            - name: Clone SuluJsReference repository
+              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
+
+            - name: Clone SuluJsReference repository
+              uses: actions/checkout@v1
+              with:
+                  repository: luca-rath/sulu-js-reference
+                  path: styleguide2
+
             - name: Change styleguide config
               run: |
                   sed -i 's/VERSION/${{ steps.get_version.outputs.VERSION }}/g' styleguide.build.config.js
@@ -34,9 +49,6 @@ jobs:
 
             - name: Install dependencies
               run: npm install
-
-            - name: Clone SuluJsReference repository
-              run: git clone git@github.com:luca-rath/sulu-js-reference.git styleguide
 
             - name: Build styleguide
               run: npm run styleguide:build -- --config styleguide.build.config.js
