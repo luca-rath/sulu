@@ -22,7 +22,7 @@ jobs:
               id: get_version
               # run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
               run: |
-                  if [[ -z $TAG_NAME ]]; then echo ::set-output name=VERSION::$(echo $TAG_NAME | cut -d . -f -2); else echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3); fi
+                  if [ $TAG_NAME ]; then echo ::set-output name=VERSION::$(echo $TAG_NAME | cut -d . -f -2); else echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3); fi
               env:
                   TAG_NAME: ${{ github.event.release.tag_name }}
 
