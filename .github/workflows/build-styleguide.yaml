@@ -21,7 +21,7 @@ jobs:
               run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
 
             - name: Print the version
-            - run: echo Version ${{ steps.get_version.outputs.VERSION }}
+              run: echo Version ${{ steps.get_version.outputs.VERSION }}
 
 #            - name: Use Node.js 12
 #              uses: actions/setup-node@v1
