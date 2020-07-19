@@ -147,7 +147,7 @@ module.exports = { // eslint-disable-line
             rules: [
                 {
                     test: /\.js$/,
-                    exclude: /node_modules\/(?!(sulu-(.*)-bundle|@ckeditor|lodash-es)\/)/,
+                    exclude: /node_modules\/(?!(sulu-(.*)-bundle|@ckeditor|lodash-es|version-switcher)\/)/,
                     use: {
                         loader: 'babel-loader',
                         options: babelConfig,
