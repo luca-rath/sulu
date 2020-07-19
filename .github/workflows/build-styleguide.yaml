@@ -36,8 +36,8 @@ jobs:
 
             - name: Create styleguide global variables
               run: |
-                  echo "globalThis.STYLEGUIDE_CURRENT_VERSION = '${{ steps.get_current_version.outputs.VERSION }}';" > styleguide-globals.js
-                  echo "globalThis.STYLEGUIDE_AVAILABLE_VERSIONS = ${{ steps.get_available_versions.outputs.VERSIONS }};" >> styleguide-globals.js
+                  echo 'globalThis.STYLEGUIDE_CURRENT_VERSION = "${{ steps.get_current_version.outputs.VERSION }}";' > styleguide-globals.js
+                  echo 'globalThis.STYLEGUIDE_AVAILABLE_VERSIONS = ${{ steps.get_available_versions.outputs.VERSIONS }};' >> styleguide-globals.js
 
             - name: Use Node.js 12
               uses: actions/setup-node@v1
