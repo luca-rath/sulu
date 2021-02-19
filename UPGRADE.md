@@ -2,6 +2,12 @@
 
 ## 2.2.x
 
+### Deprecated `PageTeaserProvider`
+
+A new service `PHPCRPageTeaserProvider` has been added and will replace the old `PageTeaserProvider` in future.
+The constructor of `PageTeaserProvider` has been changed to accept the `PHPCRPageTeaserProvider` service as fourth argument.
+If it's passed, the new `PHPCRPageTeaserProvider` will be used automatically instead of the old `PageTeaserProvider`.
+
 ### Deprecated service `sulu_location.geolocator.guzzle.client` and parameter `sulu_location.guzzle.client.class`
 
 Because `NominatimGeolocator` and `GoogleGeolocator` now use the symfony http client the `sulu_location.geolocator.guzzle.client` is now deprecated
