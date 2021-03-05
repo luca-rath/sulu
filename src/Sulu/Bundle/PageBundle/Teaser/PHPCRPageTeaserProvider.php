@@ -176,6 +176,10 @@ class PHPCRPageTeaserProvider implements TeaserProviderInterface
             if ($teaserProperty = $this->getTeaserProperty($metadata, 'sulu.teaser.media', 'teaserMedia')) {
                 $properties[] = $teaserProperty;
             }
+
+            foreach ($this->getTeaserFieldsProperties($metadata, 'sulu.teaser.field') as $property) {
+                $properties[] = $property;
+            }
         }
 
         return $properties;
@@ -190,6 +194,30 @@ class PHPCRPageTeaserProvider implements TeaserProviderInterface
         }
 
         return null;
+    }
+
+    /**
+     * @return PropertyParameter[]
+     */
+    private function getTeaserFieldsProperties(StructureMetadata $metadata, string $tagName): array
+    {
+        $properties = [];
+
+        foreach ($metadata->getPropertiesByTagName($tagName) as $property) {
+            foreach ($property->getTags() as $tag) {
+                $tagType = $tag['attributes']['type'] ?? null;
+                if ($tag['name'] !== $tagName || null === $tagType) {
+                    continue;
+                }
+
+                $properties[] = new PropertyParameter(
+                    $metadata->getName() . '_teaserField_' . $tagType,
+                    $property->getName()
+                );
+            }
+        }
+
+        return $properties;
     }
 
     /**
@@ -287,11 +315,35 @@ class PHPCRPageTeaserProvider implements TeaserProviderInterface
      *
      * @return array<string, mixed>
      */
+    protected function getAdditionalFields(array $pageData): array
+    {
+        $structureType = $this->getStructureType($pageData);
+
+        $additionalFields = [];
+        foreach ($pageData as $key => $value) {
+            $prefix = $structureType . '_teaserField_';
+            if (0 !== \strpos($key, $prefix)) {
+                continue;
+            }
+
+            $fieldName = \substr($key, \strlen($prefix));
+            $additionalFields[$fieldName] = $value;
+        }
+
+        return $additionalFields;
+    }
+
+    /**
+     * @param array<string, mixed> $pageData
+     *
+     * @return array<string, mixed>
+     */
     protected function getAttributes(array $pageData): array
     {
         return [
             'structureType' => $this->getStructureType($pageData),
             'webspaceKey' => $this->getWebspaceKey($pageData),
+            'additionalFields' => $this->getAdditionalFields($pageData),
         ];
     }
 
