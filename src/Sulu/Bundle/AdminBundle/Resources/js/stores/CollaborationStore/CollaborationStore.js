@@ -4,6 +4,7 @@ import ResourceRequester from '../../services/ResourceRequester';
 import type {Collaboration} from './types';
 
 export default class CollaborationStore {
+    static enabled: boolean;
     static interval: number;
 
     resourceKey: string;
@@ -20,7 +21,7 @@ export default class CollaborationStore {
     }
 
     sendRequest() {
-        if (this.destroyed) {
+        if (!this.enabled || this.destroyed) {
             return;
         }
 
